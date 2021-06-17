@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
-EXPOSE 8555
-EXPOSE 8444
+EXPOSE 6755
+EXPOSE 6888
 
 ENV keys="generate"
 ENV harvester="false"
@@ -20,7 +20,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning ${BRANCH}"
-RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain.git \
+RUN git clone --branch ${BRANCH} https://github.com/Flax-Network/flax-blockchain.git \
 && cd chia-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
