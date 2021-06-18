@@ -22,7 +22,7 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning ${BRANCH}"
 RUN git clone --branch ${BRANCH} https://github.com/ChainGreenOrg/chaingreen-blockchain.git \
-&& git revert 99fc37c
+&& git revert 99fc37c \
 && cd chaingreen-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
