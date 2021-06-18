@@ -1,8 +1,8 @@
 FROM ubuntu:latest
 
-EXPOSE 6755
-EXPOSE 6888
-EXPOSE 6885
+EXPOSE 8755
+EXPOSE 8744
+EXPOSE 8777
 
 ENV keys="generate"
 ENV harvester="false"
@@ -20,15 +20,16 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteract
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
-RUN echo "cloning main"
-RUN git clone --branch main https://github.com/Flax-Network/flax-blockchain.git \
-&& cd flax-blockchain \
+RUN echo "cloning ${BRANCH}"
+RUN git clone --branch ${BRANCH} https://github.com/ChainGreenOrg/chaingreen-blockchain.git \
+RUN git revert 99fc37c
+&& cd chaingreen-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
-ENV PATH=/flax-blockchain/venv/bin/:$PATH
-WORKDIR /flax-blockchain
+ENV PATH=/chaingreen-blockchain/venv/bin/:$PATH
+WORKDIR /chaingreen-blockchain
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
