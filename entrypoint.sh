@@ -3,24 +3,24 @@ if [[ -n "${TZ}" ]]; then
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 fi
 
-cd /chaingreen-blockchain
+cd /goji-blockchain
 
 . ./activate
 
-chaingreen init
+goji init
 
 if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
-  chaingreen keys generate
+  goji keys generate
 elif [[ ${keys} == "copy" ]]; then
   if [[ -z ${ca} ]]; then
     echo "A path to a copy of the farmer peer's ssl/ca required."
 	exit
   else
-  chaingreen init -c ${ca}
+  goji init -c ${ca}
   fi
 else
-  chaingreen keys add -f ${keys}
+  goji keys add -f ${keys}
 fi
 
 for p in ${plots_dir//:/ }; do
@@ -28,39 +28,39 @@ for p in ${plots_dir//:/ }; do
     if [[ ! "$(ls -A $p)" ]]; then
         echo "Plots directory '${p}' appears to be empty, try mounting a plot directory with the docker -v command"
     fi
-    chaingreen plots add -d ${p}
+    goji plots add -d ${p}
 done
 
-sed -i 's/localhost/127.0.0.1/g' ~/.chaingreen/mainnet/config/config.yaml
+sed -i 's/localhost/127.0.0.1/g' ~/.goji/mainnet/config/config.yaml
 
 if [[ ${all} == 'true' ]]; then
   sh install-timelord.sh
-  chaingreen start all
+  goji start all
 elif [[ ${node} == 'true' ]]; then
-  chaingreen start node
+  goji start node
 elif [[ ${node_service} == 'true' ]]; then
-  chaingreen_full_node
+  goji_full_node
 elif [[ ${introducer} == 'true' ]]; then
-  chaingreen start introducer
+  goji start introducer
 elif [[ ${farmer} == 'true' ]]; then
-  chaingreen start farmer-only
+  goji start farmer-only
 elif [[ ${harvester} == 'true' ]]; then
   if [[ -z ${farmer_address} || -z ${farmer_port} || -z ${ca} ]]; then
     echo "A farmer peer address, port, and ca path are required."
     exit
   else
-    chaingreen configure --set-farmer-peer ${farmer_address}:${farmer_port}
-    chaingreen start harvester
+    goji configure --set-farmer-peer ${farmer_address}:${farmer_port}
+    goji start harvester
   fi
 else
-  chaingreen start farmer
+  goji start farmer
 fi
 
 if [[ ${testnet} == "true" ]]; then
   if [[ -z $full_node_port || $full_node_port == "null" ]]; then
-    chaingreen configure --set-fullnode-port 58444
+    goji configure --set-fullnode-port 58444
   else
-    chaingreen configure --set-fullnode-port ${var.full_node_port}
+    goji configure --set-fullnode-port ${var.full_node_port}
   fi
 fi
 

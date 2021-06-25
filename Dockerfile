@@ -1,8 +1,8 @@
 FROM ubuntu:latest
 
-EXPOSE 8755
-EXPOSE 8744
-EXPOSE 8777
+EXPOSE 7555
+EXPOSE 7444
+EXPOSE 7447
 
 ENV keys="generate"
 ENV harvester="false"
@@ -21,15 +21,14 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning ${BRANCH}"
-RUN git clone --branch ${BRANCH} https://github.com/ChainGreenOrg/chaingreen-blockchain.git \
-&& cd chaingreen-blockchain \
-&& git revert 99fc37c \
+RUN git clone --branch ${BRANCH} https://github.com/getgoji/goji-blockchain.git \
+&& cd goji-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
-ENV PATH=/chaingreen-blockchain/venv/bin/:$PATH
-WORKDIR /chaingreen-blockchain
+ENV PATH=/goji-blockchain/venv/bin/:$PATH
+WORKDIR /goji-blockchain
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
