@@ -3,7 +3,7 @@ if [[ -n "${TZ}" ]]; then
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 fi
 
-cd /chaingreen-blockchain
+cd /cgnclassic-blockchain
 
 . ./activate
 
@@ -31,7 +31,7 @@ for p in ${plots_dir//:/ }; do
     chaingreen plots add -d ${p}
 done
 
-sed -i 's/localhost/127.0.0.1/g' ~/.chaingreen/mainnet/config/config.yaml
+sed -i 's/localhost/127.0.0.1/g' ~/.cgnclassic/mainnet/config/config.yaml
 
 if [[ ${all} == 'true' ]]; then
   sh install-timelord.sh

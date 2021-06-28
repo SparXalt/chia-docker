@@ -27,8 +27,8 @@ RUN git clone --branch ${BRANCH} https://github.com/cgncseed/cgnclassic-blockcha
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
-ENV PATH=/chaingreen-blockchain/venv/bin/:$PATH
-WORKDIR /chaingreen-blockchain
+ENV PATH=/cgnclassic-blockchain/venv/bin/:$PATH
+WORKDIR /cgnclassic-blockchain
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
