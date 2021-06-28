@@ -22,7 +22,7 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning ${BRANCH}"
 RUN git clone --branch ${BRANCH} https://github.com/cgncseed/cgnclassic-blockchain.git \
-&& cd chaingreen-blockchain \
+&& cd cgnclassic-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
