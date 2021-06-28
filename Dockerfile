@@ -1,8 +1,8 @@
 FROM ubuntu:latest
 
-EXPOSE 8755
-EXPOSE 8744
-EXPOSE 8777
+EXPOSE 8955
+EXPOSE 8844
+EXPOSE 8877
 
 ENV keys="generate"
 ENV harvester="false"
@@ -21,9 +21,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning ${BRANCH}"
-RUN git clone --branch ${BRANCH} https://github.com/ChainGreenOrg/chaingreen-blockchain.git \
+RUN git clone --branch ${BRANCH} https://github.com/cgncseed/cgnclassic-blockchain.git \
 && cd chaingreen-blockchain \
-&& git revert 99fc37c \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
