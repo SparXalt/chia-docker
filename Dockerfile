@@ -1,8 +1,8 @@
 FROM ubuntu:latest
 
-EXPOSE 6755
-EXPOSE 6888
-EXPOSE 6885
+EXPOSE 9444
+EXPOSE 9555
+EXPOSE 9447
 
 ENV keys="generate"
 ENV harvester="false"
@@ -21,14 +21,14 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning main"
-RUN git clone --branch main https://github.com/Flax-Network/flax-blockchain.git \
-&& cd flax-blockchain \
+RUN git clone --branch master https://github.com/Spare-Network/Spare-blockchain.git \
+&& cd Spare-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
-ENV PATH=/flax-blockchain/venv/bin/:$PATH
-WORKDIR /flax-blockchain
+ENV PATH=/Spare-blockchain/venv/bin/:$PATH
+WORKDIR /Spare-blockchain
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
