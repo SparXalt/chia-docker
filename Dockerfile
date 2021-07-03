@@ -1,8 +1,8 @@
 FROM ubuntu:latest
 
-EXPOSE 6755
-EXPOSE 6888
-EXPOSE 6885
+EXPOSE 9699
+EXPOSE 9755
+EXPOSE 9647
 
 ENV keys="generate"
 ENV harvester="false"
@@ -21,14 +21,15 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning main"
-RUN git clone --branch main https://github.com/Flax-Network/flax-blockchain.git \
-&& cd flax-blockchain \
+RUN git clone --branch main https://github.com/HiveProject2021/chives-blockchain.git \
+&& cd chives-blockchain \
 && git submodule update --init mozilla-ca \
+&& sed -i s/9444/8444/g chives/wallet/derive_keys.py \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
-ENV PATH=/flax-blockchain/venv/bin/:$PATH
-WORKDIR /flax-blockchain
+ENV PATH=/chives-blockchain/venv/bin/:$PATH
+WORKDIR /chives-blockchain
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
