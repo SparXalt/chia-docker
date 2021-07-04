@@ -24,7 +24,7 @@ RUN echo "cloning main"
 RUN git clone --branch main https://github.com/HiveProject2021/chives-blockchain.git \
 && cd chives-blockchain \
 && git submodule update --init mozilla-ca \
-&& sed -i s/9444/8444/g chives/wallet/derive_keys.py \
+&& sed -i s/9699/8444/g chives/wallet/derive_keys.py \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
