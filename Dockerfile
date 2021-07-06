@@ -21,7 +21,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning main"
-RUN git clone --branch main https://github.com/equality-Network/equality-blockchain.git \
+RUN git clone --branch master https://github.com/equality-Network/equality-blockchain.git \
 && cd equality-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
