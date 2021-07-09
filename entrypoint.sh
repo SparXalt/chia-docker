@@ -3,7 +3,7 @@ if [[ -n "${TZ}" ]]; then
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 fi
 
-cd /dogechia-blockchain
+cd /doge-chia
 
 . ./activate
 

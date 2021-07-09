@@ -22,13 +22,13 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning main"
 RUN git clone --branch main https://github.com/DogeChia/doge-chia.git \
-&& cd dogechia-blockchain \
+&& cd doge-chia \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
-ENV PATH=/dogechia-blockchain/venv/bin/:$PATH
-WORKDIR /dogechia-blockchain
+ENV PATH=/doge-chia/venv/bin/:$PATH
+WORKDIR /doge-chia
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
