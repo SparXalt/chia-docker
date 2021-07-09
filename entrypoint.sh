@@ -3,24 +3,24 @@ if [[ -n "${TZ}" ]]; then
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 fi
 
-cd /flax-blockchain
+cd /hddcoin-blockchain
 
 . ./activate
 
-flax init
+hddcoin init
 
 if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
-  flax keys generate
+  hddcoin keys generate
 elif [[ ${keys} == "copy" ]]; then
   if [[ -z ${ca} ]]; then
     echo "A path to a copy of the farmer peer's ssl/ca required."
 	exit
   else
-  flax init -c ${ca}
+  hddcoin init -c ${ca}
   fi
 else
-  flax keys add -f ${keys}
+  hddcoin keys add -f ${keys}
 fi
 
 for p in ${plots_dir//:/ }; do
@@ -28,30 +28,30 @@ for p in ${plots_dir//:/ }; do
     if [[ ! "$(ls -A $p)" ]]; then
         echo "Plots directory '${p}' appears to be empty, try mounting a plot directory with the docker -v command"
     fi
-    flax plots add -d ${p}
+    hddcoin plots add -d ${p}
 done
 
-sed -i 's/localhost/127.0.0.1/g' ~/.flax/mainnet/config/config.yaml
+sed -i 's/localhost/127.0.0.1/g' ~/.hddcoin/mainnet/config/config.yaml
 
 if [[ ${farmer} == 'true' ]]; then
-  flax start farmer-only
+  hddcoin start farmer-only
 elif [[ ${harvester} == 'true' ]]; then
   if [[ -z ${farmer_address} || -z ${farmer_port} || -z ${ca} ]]; then
     echo "A farmer peer address, port, and ca path are required."
     exit
   else
-    flax configure --set-farmer-peer ${farmer_address}:${farmer_port}
-    flax start harvester
+    hddcoin configure --set-farmer-peer ${farmer_address}:${farmer_port}
+    hddcoin start harvester
   fi
 else
-  flax start farmer
+  hddcoin start farmer
 fi
 
 if [[ ${testnet} == "true" ]]; then
   if [[ -z $full_node_port || $full_node_port == "null" ]]; then
-    flax configure --set-fullnode-port 58444
+    hddcoin configure --set-fullnode-port 58444
   else
-    flax configure --set-fullnode-port ${var.full_node_port}
+    hddcoin configure --set-fullnode-port ${var.full_node_port}
   fi
 fi
 
