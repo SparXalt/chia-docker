@@ -21,14 +21,14 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning main"
-RUN git clone --branch main https://github.com/Avocado-Network/avocado-blockchain.git \
-&& cd avacado-blockchain \
+RUN git clone --branch main https://github.com/avocado-network/avocado-blockchain \
+&& cd avocado-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
-ENV PATH=/avacado-blockchain/venv/bin/:$PATH
-WORKDIR /avacado-blockchain
+ENV PATH=/avocado-blockchain/venv/bin/:$PATH
+WORKDIR /avocado-blockchain
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]

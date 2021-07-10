@@ -3,24 +3,24 @@ if [[ -n "${TZ}" ]]; then
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 fi
 
-cd /avacado-blockchain
+cd /avocado-blockchain
 
 . ./activate
 
-avacado init
+avocado init
 
 if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
-  avacado keys generate
+  avocado keys generate
 elif [[ ${keys} == "copy" ]]; then
   if [[ -z ${ca} ]]; then
     echo "A path to a copy of the farmer peer's ssl/ca required."
 	exit
   else
-  avacado init -c ${ca}
+  avocado init -c ${ca}
   fi
 else
-  avacado keys add -f ${keys}
+  avocado keys add -f ${keys}
 fi
 
 for p in ${plots_dir//:/ }; do
@@ -28,30 +28,30 @@ for p in ${plots_dir//:/ }; do
     if [[ ! "$(ls -A $p)" ]]; then
         echo "Plots directory '${p}' appears to be empty, try mounting a plot directory with the docker -v command"
     fi
-    avacado plots add -d ${p}
+    avocado plots add -d ${p}
 done
 
-sed -i 's/localhost/127.0.0.1/g' ~/.avacado/mainnet/config/config.yaml
+sed -i 's/localhost/127.0.0.1/g' ~/.avocado/mainnet/config/config.yaml
 
 if [[ ${farmer} == 'true' ]]; then
-  avacado start farmer-only
+  avocado start farmer-only
 elif [[ ${harvester} == 'true' ]]; then
   if [[ -z ${farmer_address} || -z ${farmer_port} || -z ${ca} ]]; then
     echo "A farmer peer address, port, and ca path are required."
     exit
   else
-    avacado configure --set-farmer-peer ${farmer_address}:${farmer_port}
-    avacado start harvester
+    avocado configure --set-farmer-peer ${farmer_address}:${farmer_port}
+    avocado start harvester
   fi
 else
-  avacado start farmer
+  avocado start farmer
 fi
 
 if [[ ${testnet} == "true" ]]; then
   if [[ -z $full_node_port || $full_node_port == "null" ]]; then
-    avacado configure --set-fullnode-port 58444
+    avocado configure --set-fullnode-port 58444
   else
-    avacado configure --set-fullnode-port ${var.full_node_port}
+    avocado configure --set-fullnode-port ${var.full_node_port}
   fi
 fi
 
