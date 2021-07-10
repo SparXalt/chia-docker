@@ -21,7 +21,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning main"
-RUN git clone --branch main https://github.com/avacado-Network/avacado-blockchain.git \
+RUN git clone --branch main https://github.com/Avocado-Network/avocado-blockchain.git \
 && cd avacado-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
