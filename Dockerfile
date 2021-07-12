@@ -21,7 +21,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning main"
-RUN git clone --branch main https://github.com/metali-Network/metali-blockchain.git \
+RUN git clone --branch main https://github.com/Melati-Network/melati-blockchain.git \
 && cd metali-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
