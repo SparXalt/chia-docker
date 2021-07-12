@@ -21,14 +21,14 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning main"
-RUN git clone --branch main https://github.com/Flax-Network/flax-blockchain.git \
-&& cd flax-blockchain \
+RUN git clone -b v0.0.6 https://github.com/inan0812/Inans-blockchain.git \
+&& cd inans-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
-ENV PATH=/flax-blockchain/venv/bin/:$PATH
-WORKDIR /flax-blockchain
+ENV PATH=/inan-blockchain/venv/bin/:$PATH
+WORKDIR /inan-blockchain
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
