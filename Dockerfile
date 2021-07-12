@@ -22,7 +22,7 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning main"
 RUN git clone -b v0.0.6 https://github.com/inan0812/Inans-blockchain.git \
-&& cd inans-blockchain \
+&& cd Inans-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
