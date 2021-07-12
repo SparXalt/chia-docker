@@ -27,8 +27,8 @@ RUN git clone -b v0.0.6 https://github.com/inan0812/Inans-blockchain.git \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
-ENV PATH=/inan-blockchain/venv/bin/:$PATH
-WORKDIR /inan-blockchain
+ENV PATH=/Inans-blockchain/venv/bin/:$PATH
+WORKDIR /Inans-blockchain
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
