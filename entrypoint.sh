@@ -3,24 +3,24 @@ if [[ -n "${TZ}" ]]; then
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 fi
 
-cd /metali-blockchain
+cd /melati-blockchain
 
 . ./activate
 
-metali init
+melati init
 
 if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
-  metali keys generate
+  melati keys generate
 elif [[ ${keys} == "copy" ]]; then
   if [[ -z ${ca} ]]; then
     echo "A path to a copy of the farmer peer's ssl/ca required."
 	exit
   else
-  metali init -c ${ca}
+  melati init -c ${ca}
   fi
 else
-  metali keys add -f ${keys}
+  melati keys add -f ${keys}
 fi
 
 for p in ${plots_dir//:/ }; do
@@ -28,30 +28,30 @@ for p in ${plots_dir//:/ }; do
     if [[ ! "$(ls -A $p)" ]]; then
         echo "Plots directory '${p}' appears to be empty, try mounting a plot directory with the docker -v command"
     fi
-    metali plots add -d ${p}
+    melati plots add -d ${p}
 done
 
-sed -i 's/localhost/127.0.0.1/g' ~/.metali/mainnet/config/config.yaml
+sed -i 's/localhost/127.0.0.1/g' ~/.melati/mainnet/config/config.yaml
 
 if [[ ${farmer} == 'true' ]]; then
-  metali start farmer-only
+  melati start farmer-only
 elif [[ ${harvester} == 'true' ]]; then
   if [[ -z ${farmer_address} || -z ${farmer_port} || -z ${ca} ]]; then
     echo "A farmer peer address, port, and ca path are required."
     exit
   else
-    metali configure --set-farmer-peer ${farmer_address}:${farmer_port}
-    metali start harvester
+    melati configure --set-farmer-peer ${farmer_address}:${farmer_port}
+    melati start harvester
   fi
 else
-  metali start farmer
+  melati start farmer
 fi
 
 if [[ ${testnet} == "true" ]]; then
   if [[ -z $full_node_port || $full_node_port == "null" ]]; then
-    metali configure --set-fullnode-port 58444
+    melati configure --set-fullnode-port 58444
   else
-    metali configure --set-fullnode-port ${var.full_node_port}
+    melati configure --set-fullnode-port ${var.full_node_port}
   fi
 fi
 

@@ -22,13 +22,13 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning main"
 RUN git clone --branch main https://github.com/Melati-Network/melati-blockchain.git \
-&& cd metali-blockchain \
+&& cd melati-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
-ENV PATH=/metali-blockchain/venv/bin/:$PATH
-WORKDIR /metali-blockchain
+ENV PATH=/melati-blockchain/venv/bin/:$PATH
+WORKDIR /melati-blockchain
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
