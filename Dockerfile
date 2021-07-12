@@ -21,7 +21,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning main"
-RUN git clone --branch main https://github.com/wheat-Network/wheat-blockchain.git \
+RUN git clone --branch main https://github.com/wheatnetwork/wheat-blockchain.git \
 && cd wheat-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
