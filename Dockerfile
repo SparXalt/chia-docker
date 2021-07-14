@@ -1,8 +1,8 @@
 FROM ubuntu:latest
 
-EXPOSE 6755
-EXPOSE 6888
-EXPOSE 6885
+EXPOSE 21333
+EXPOSE 21555
+EXPOSE 21447
 
 ENV keys="generate"
 ENV harvester="false"
