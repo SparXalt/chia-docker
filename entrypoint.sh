@@ -3,24 +3,24 @@ if [[ -n "${TZ}" ]]; then
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 fi
 
-cd /flax-blockchain
+cd /cannabis-blockchain
 
 . ./activate
 
-flax init
+cannabis init
 
 if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
-  flax keys generate
+  cannabis keys generate
 elif [[ ${keys} == "copy" ]]; then
   if [[ -z ${ca} ]]; then
     echo "A path to a copy of the farmer peer's ssl/ca required."
 	exit
   else
-  flax init -c ${ca}
+  cannabis init -c ${ca}
   fi
 else
-  flax keys add -f ${keys}
+  cannabis keys add -f ${keys}
 fi
 
 for p in ${plots_dir//:/ }; do
@@ -28,30 +28,30 @@ for p in ${plots_dir//:/ }; do
     if [[ ! "$(ls -A $p)" ]]; then
         echo "Plots directory '${p}' appears to be empty, try mounting a plot directory with the docker -v command"
     fi
-    flax plots add -d ${p}
+    cannabis plots add -d ${p}
 done
 
-sed -i 's/localhost/127.0.0.1/g' ~/.flax/mainnet/config/config.yaml
+sed -i 's/localhost/127.0.0.1/g' ~/.cannabis/mainnet/config/config.yaml
 
 if [[ ${farmer} == 'true' ]]; then
-  flax start farmer-only
+  cannabis start farmer-only
 elif [[ ${harvester} == 'true' ]]; then
   if [[ -z ${farmer_address} || -z ${farmer_port} || -z ${ca} ]]; then
     echo "A farmer peer address, port, and ca path are required."
     exit
   else
-    flax configure --set-farmer-peer ${farmer_address}:${farmer_port}
-    flax start harvester
+    cannabis configure --set-farmer-peer ${farmer_address}:${farmer_port}
+    cannabis start harvester
   fi
 else
-  flax start farmer
+  cannabis start farmer
 fi
 
 if [[ ${testnet} == "true" ]]; then
   if [[ -z $full_node_port || $full_node_port == "null" ]]; then
-    flax configure --set-fullnode-port 58444
+    cannabis configure --set-fullnode-port 58444
   else
-    flax configure --set-fullnode-port ${var.full_node_port}
+    cannabis configure --set-fullnode-port ${var.full_node_port}
   fi
 fi
 
