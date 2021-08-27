@@ -3,24 +3,24 @@ if [[ -n "${TZ}" ]]; then
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 fi
 
-cd /chiadogecoin
+cd /cryptodoge
 
 . ./activate
 
-chiadoge init
+cryptodoge init
 
 if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
-  chiadoge keys generate
+  cryptodoge keys generate
 elif [[ ${keys} == "copy" ]]; then
   if [[ -z ${ca} ]]; then
     echo "A path to a copy of the farmer peer's ssl/ca required."
 	exit
   else
-  chiadoge init -c ${ca}
+  cryptodoge init -c ${ca}
   fi
 else
-  chiadoge keys add -f ${keys}
+  cryptodoge keys add -f ${keys}
 fi
 
 for p in ${plots_dir//:/ }; do
@@ -28,30 +28,30 @@ for p in ${plots_dir//:/ }; do
     if [[ ! "$(ls -A $p)" ]]; then
         echo "Plots directory '${p}' appears to be empty, try mounting a plot directory with the docker -v command"
     fi
-    chiadoge plots add -d ${p}
+    cryptodoge plots add -d ${p}
 done
 
-sed -i 's/localhost/127.0.0.1/g' ~/.chiadoge/mainnet/config/config.yaml
+sed -i 's/localhost/127.0.0.1/g' ~/.cryptodoge/mainnet/config/config.yaml
 
 if [[ ${farmer} == 'true' ]]; then
-  chiadoge start farmer-only
+  cryptodoge start farmer-only
 elif [[ ${harvester} == 'true' ]]; then
   if [[ -z ${farmer_address} || -z ${farmer_port} || -z ${ca} ]]; then
     echo "A farmer peer address, port, and ca path are required."
     exit
   else
-    chiadoge configure --set-farmer-peer ${farmer_address}:${farmer_port}
-    chiadoge start harvester
+    cryptodoge configure --set-farmer-peer ${farmer_address}:${farmer_port}
+    cryptodoge start harvester
   fi
 else
-  chiadoge start farmer
+  cryptodoge start farmer
 fi
 
 if [[ ${testnet} == "true" ]]; then
   if [[ -z $full_node_port || $full_node_port == "null" ]]; then
-    chiadoge configure --set-fullnode-port 58444
+    cryptodoge configure --set-fullnode-port 58444
   else
-    chiadoge configure --set-fullnode-port ${var.full_node_port}
+    cryptodoge configure --set-fullnode-port ${var.full_node_port}
   fi
 fi
 

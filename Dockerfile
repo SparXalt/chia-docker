@@ -1,8 +1,8 @@
 FROM ubuntu:latest
 
-EXPOSE 6899
-EXPOSE 6795
-EXPOSE 6895
+EXPOSE 15994
+EXPOSE 16795
+EXPOSE 16895
 
 ENV keys="generate"
 ENV harvester="false"
@@ -21,14 +21,14 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning main"
-RUN git clone --branch main https://github.com/chiadoge-Network/chiadogecoin.git \
-&& cd chiadogecoin \
+RUN git clone --branch main https://github.com/CryptoDoge-Network/cryptodoge \
+&& cd cryptodoge \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
-ENV PATH=/chiadogecoin/venv/bin/:$PATH
-WORKDIR /chiadogecoin
+ENV PATH=/cryptodoge/venv/bin/:$PATH
+WORKDIR /cryptodoge
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
